@@ -8,18 +8,22 @@ import { InvoicesTableSkeleton } from '@/app/ui/skeletons';
 import { Suspense } from 'react';
 import { fetchInvoicesPages } from '@/app/lib/data';
  
+interface SearchParamsProps {
+  query?: string;
+  page?: string;
+}
+
 interface PageProps {
-  searchParams: {
-    query?: string;
-    page?: string;
-  };
+  searchParams: Promise<SearchParamsProps>;
 }
 
 export default async function Page({
   searchParams,
 }: PageProps) {
-  // Await searchParams before accessing its properties
+  // Await the searchParams Promise
   const params = await searchParams;
+  
+  // Now we can safely access the properties
   const query = params?.query ?? '';
   const currentPage = Number(params?.page) || 1;
   const totalPages = await fetchInvoicesPages(query);
