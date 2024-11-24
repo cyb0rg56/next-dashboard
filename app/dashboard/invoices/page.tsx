@@ -20,10 +20,7 @@ interface PageProps {
 export default async function Page({
   searchParams,
 }: PageProps) {
-  // Await the searchParams Promise
   const params = await searchParams;
-  
-  // Now we can safely access the properties
   const query = params?.query ?? '';
   const currentPage = Number(params?.page) || 1;
   const totalPages = await fetchInvoicesPages(query);
@@ -38,7 +35,6 @@ export default async function Page({
         <CreateInvoice />
       </div>
       <Suspense key={query + currentPage} fallback={<InvoicesTableSkeleton />}>
-        {/* @ts-expect-error Async Server Component */}
         <Table query={query} currentPage={currentPage} />
       </Suspense>
       <div className="mt-5 flex w-full justify-center">
